@@ -1,7 +1,10 @@
+import React from 'react'
 import { Providers } from './providers'
+import '@rainbow-me/rainbowkit/styles.css'
+import ClientLayout from '@/components/ClientLayout'
 
 export const metadata = {
-  title: 'wagmi',
+  title: 'Analytics | Crossify',
 }
 
 export default function RootLayout({
@@ -12,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ClientLayout>{children}</ClientLayout>
+        </Providers>
       </body>
     </html>
   )
