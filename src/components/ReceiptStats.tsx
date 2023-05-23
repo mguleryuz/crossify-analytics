@@ -5,7 +5,6 @@ import { compressAddress } from '@/lib/utils'
 import {
   Box,
   Heading,
-  Flex,
   Stat,
   StatLabel,
   StatNumber,
@@ -16,11 +15,18 @@ import {
   Tbody,
   Td,
   Stack,
+  SimpleGrid,
+  GridItem,
+  Divider,
 } from '@chakra-ui/react'
-import { Chart, registerables } from 'chart.js'
-import { Doughnut, Line } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 
-Chart.register(...registerables)
+const statStyle = {
+  p: 3,
+  border: '1px',
+  borderColor: 'gray.200',
+  borderRadius: 'md',
+}
 
 const ReceiptStatsComponent = ({ stats }: { stats: ReceiptStats }) => {
   console.log(stats)
@@ -41,60 +47,58 @@ const ReceiptStatsComponent = ({ stats }: { stats: ReceiptStats }) => {
     ],
   }
 
-  const transactionStatusBreakdownData = {
-    labels: Object.keys(stats.transactionStatusBreakdown || {}),
-    datasets: [
-      {
-        data: Object.values(stats.transactionStatusBreakdown || {}),
-        hoverOffset: 4,
-      },
-    ],
-  }
-
   return (
-    <Box p={5}>
-      <Heading mb={5}>Receipt Stats</Heading>
+    <Stack p={5} spacing={5}>
+      <Heading>Receipt Stats</Heading>
 
-      <Stack>
-        <Flex gap={2}>
-          <Stat p={5} border="1px" borderColor="gray.200" borderRadius="md">
-            <StatLabel>Total Transactions</StatLabel>
-            <StatNumber>{stats.totalTransactions}</StatNumber>
-          </Stat>
-          <Stat p={5} border="1px" borderColor="gray.200" borderRadius="md">
-            <StatLabel>Total Value Transacted (USD)</StatLabel>
-            <StatNumber>{stats.totalValueTransactedUSD}</StatNumber>
-          </Stat>
-        </Flex>
+      <SimpleGrid columns={2} row={2} spacing={3}>
+        {!!stats?.transactionStatusBreakdown && (
+          <GridItem colSpan={2} {...statStyle}>
+            <Heading size="md" mb={3}>
+              Status Breakdown
+            </Heading>
+            <Divider mb={2} />
+            {Object.entries(stats.transactionStatusBreakdown).map(
+              ([status, count]) => (
+                <Stat key={status}>
+                  <StatLabel>{status}</StatLabel>
+                  <StatNumber>{count}</StatNumber>
+                </Stat>
+              )
+            )}
+          </GridItem>
+        )}
 
-        <Flex gap={2}>
-          <Stat p={5} border="1px" borderColor="gray.200" borderRadius="md">
-            <StatLabel>Total Platform Fees (USD)</StatLabel>
-            <StatNumber>{stats.totalPlatformFeesUSD}</StatNumber>
-          </Stat>
-          <Stat p={5} border="1px" borderColor="gray.200" borderRadius="md">
-            <StatLabel>Average Transaction Value (USD)</StatLabel>
-            <StatNumber>{stats.averageTransactionValueUSD}</StatNumber>
-          </Stat>
-        </Flex>
-
-        <Flex>
-          <Stat p={5} border="1px" borderColor="gray.200" borderRadius="md">
+        <Stat {...statStyle}>
+          <StatLabel>Total Transactions</StatLabel>
+          <StatNumber>{stats.totalTransactions}</StatNumber>
+        </Stat>
+        <Stat {...statStyle}>
+          <StatLabel>Total Value Transacted (USD)</StatLabel>
+          <StatNumber>{stats.totalValueTransactedUSD}</StatNumber>
+        </Stat>
+        <Stat {...statStyle}>
+          <StatLabel>Total Platform Fees (USD)</StatLabel>
+          <StatNumber>{stats.totalPlatformFeesUSD}</StatNumber>
+        </Stat>
+        <Stat {...statStyle}>
+          <StatLabel>Average Transaction Value (USD)</StatLabel>
+          <StatNumber>{stats.averageTransactionValueUSD}</StatNumber>
+        </Stat>
+        <GridItem colSpan={2}>
+          <Stat {...statStyle}>
             <StatLabel>Total Gas Fees (USD)</StatLabel>
             <StatNumber>{stats.totalGasFeesUSD}</StatNumber>
           </Stat>
-        </Flex>
-      </Stack>
+        </GridItem>
+      </SimpleGrid>
 
-      <Heading size="md" my={5}>
-        Transaction Status Breakdown
-      </Heading>
-      <Doughnut data={transactionStatusBreakdownData} />
-
-      <Heading size="md" my={5}>
-        Transactions Over Time
-      </Heading>
-      <Line data={transactionsOverTimeData} />
+      <Box>
+        <Heading size="md" mb={3}>
+          Transactions Over Times
+        </Heading>
+        <Line data={transactionsOverTimeData} />
+      </Box>
 
       <Heading size="md" my={5}>
         Top Tokens Transacted
@@ -177,7 +181,7 @@ const ReceiptStatsComponent = ({ stats }: { stats: ReceiptStats }) => {
           ))}
         </Tbody>
       </Table>
-    </Box>
+    </Stack>
   )
 }
 

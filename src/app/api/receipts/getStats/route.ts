@@ -64,9 +64,9 @@ export async function GET(request: Request) {
     },
   ])
     .next()
-    .then((res) => res?.total)
+    .then((res) => Number(res?.total?.toFixed(2)))
 
-  const totalPlatformFeesUSD = (await Receipt?.aggregate([
+  const totalPlatformFeesUSD = await Receipt?.aggregate([
     {
       $group: {
         _id: null,
@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     },
   ])
     .next()
-    .then((res) => res?.total)) as number
+    .then((res) => Number(res?.total?.toFixed(2)))
 
   const averageTransactionValueUSD = await Receipt?.aggregate([
     {
@@ -88,7 +88,7 @@ export async function GET(request: Request) {
     },
   ])
     .next()
-    .then((res) => res?.average)
+    .then((res) => Number(res?.average?.toFixed(2)))
 
   const totalGasFeesUSD = await Receipt?.aggregate([
     {

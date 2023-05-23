@@ -8,13 +8,18 @@ import {
   StatLabel,
   StatNumber,
   Stack,
+  Heading,
 } from '@chakra-ui/react'
 import { Line, Bar, Pie } from 'react-chartjs-2'
 import { PaymentStats } from '@/app/api/payments/getStats/route'
-import { Chart, registerables } from 'chart.js'
 import { compressAddress } from '@/lib/utils'
 
-Chart.register(...registerables)
+const statStyle = {
+  p: 3,
+  border: '1px',
+  borderColor: 'gray.200',
+  borderRadius: 'md',
+}
 
 const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
   console.log(stats)
@@ -84,21 +89,23 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
     return null
 
   return (
-    <Stack p={5} spacing={5}>
-      <SimpleGrid columns={2} spacing={10}>
-        <Stat>
+    <Stack p={5} spacing={3}>
+      <Heading>Payment Stats</Heading>
+
+      <SimpleGrid columns={2} spacing={3}>
+        <Stat {...statStyle}>
           <StatLabel>Total Payments</StatLabel>
           <StatNumber>{stats.total}</StatNumber>
         </Stat>
-        <Stat>
+        <Stat {...statStyle}>
           <StatLabel>Average Visit Count</StatLabel>
           <StatNumber>{stats.averageVisitCount}</StatNumber>
         </Stat>
       </SimpleGrid>
-      <Box>
-        <Text fontSize="xl" mb={2}>
+      <Box {...statStyle}>
+        <Heading size="md" mb={3}>
           Status Breakdown
-        </Text>
+        </Heading>
         <SimpleGrid columns={3} spacing={10}>
           {Object.entries(stats.statusBreakdown).map(([status, count]) => (
             <Stat key={status}>
@@ -108,10 +115,10 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
           ))}
         </SimpleGrid>
       </Box>
-      <Box>
-        <Text fontSize="xl" mb={2}>
+      <Box {...statStyle}>
+        <Heading size="md" mb={3}>
           Type Breakdown
-        </Text>
+        </Heading>
         <SimpleGrid columns={3} spacing={10}>
           {Object.entries(stats.typeBreakdown).map(([type, count]) => (
             <Stat key={type}>
@@ -128,27 +135,27 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
         <Line data={paymentsOverTimeData} />
       </Box>
       <Box>
-        <Text fontSize="xl" mb={2}>
+        <Heading size="md" mb={3}>
           Total Fiat Payment Amounts
-        </Text>
+        </Heading>
         <Bar data={totalFiatPaymentAmountsData} />
       </Box>
       <Box>
-        <Text fontSize="xl" mb={2}>
+        <Heading size="md" mb={3}>
           Total Token Payment Amounts
-        </Text>
+        </Heading>
         <Bar data={totalTokenPaymentAmountsData} />
       </Box>
       <Box>
-        <Text fontSize="xl" mb={2}>
+        <Heading size="md" mb={3}>
           Top Tokens
-        </Text>
+        </Heading>
         <Line data={topTokensData} />
       </Box>
       <Box>
-        <Text fontSize="xl" mb={2}>
+        <Heading size="md" mb={3}>
           Payment Count Per Creator
-        </Text>
+        </Heading>
         <Pie data={paymentCountPerCreatorData} />
       </Box>
     </Stack>

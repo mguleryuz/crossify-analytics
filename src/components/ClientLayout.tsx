@@ -1,29 +1,33 @@
 'use client'
 
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import RouteProgressBar from './RouteProgressBar'
-import { Box, HStack, IconButton, useColorMode } from '@chakra-ui/react'
-import { ConnectButton } from '.'
-
+import { Box, useColorModeValue, useTheme } from '@chakra-ui/react'
+import Navbar from './Navbar'
+import { Chart, registerables } from 'chart.js'
+import { Global, css } from '@emotion/react'
+import { reduceOpacity } from '@/styles'
+Chart.register(...registerables)
 export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const theme = useTheme(),
+    color = useColorModeValue('black', 'white'),
+    borderColor = useColorModeValue(
+      theme.colors.light.border,
+      theme.colors.dark.border
+    ),
+    globalStyles = css``
+
+  Chart.defaults.color = color
+  Chart.defaults.borderColor = reduceOpacity(borderColor)
+
   return (
     <Box>
+      <Global styles={globalStyles} />
       <RouteProgressBar />
-      <HStack p={3} gap={5}>
-        <IconButton
-          aria-label="theme-switch"
-          onClick={toggleColorMode}
-          icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-        >
-          Theme
-        </IconButton>
-        <ConnectButton />
-      </HStack>
+      <Navbar />
       {children}
     </Box>
   )
