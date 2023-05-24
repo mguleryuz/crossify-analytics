@@ -26,8 +26,8 @@ export default function Navbar() {
         <ConnectButton />
       </HStack>
       <HStack>
-        <Button as={Link} href={'users'}>
-          Users
+        <Button as={Link} href={'/'}>
+          Home / Users
         </Button>
         <Button as={Link} href={'payments'}>
           Payments

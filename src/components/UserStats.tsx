@@ -10,7 +10,7 @@ import {
   Stack,
   Heading,
 } from '@chakra-ui/react'
-import { Line, Bar, Pie } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { UserStats } from '@/app/api/users/getStats/route'
 
 const statStyle = {
