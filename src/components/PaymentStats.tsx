@@ -29,7 +29,7 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
     datasets: [
       {
         data: stats?.paymentsOverTime?.map((payment) => payment.count),
-        label: 'Weeks',
+        label: 'Payments',
       },
     ],
   }

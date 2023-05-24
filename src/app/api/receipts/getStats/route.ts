@@ -19,7 +19,7 @@ export type ReceiptStats = {
     chainId: number
     count: number
   }[]
-  transactionsOverTime?: { date: Date; count: number }[]
+  transactionsOverTime?: { date: string; count: number }[]
   geographicDistribution?: { country: string; count: number }[]
   transactionsByChainId?: { chainId: number; count: number }[]
   receiptPaymentRatio?: { paymentId: string; ratio: number }[]
@@ -131,12 +131,38 @@ export async function GET(request: Request) {
     await Receipt?.aggregate([
       {
         $group: {
-          _id: { $toDate: { $multiply: ['$date', 1000] } },
+          _id: {
+            week: {
+              $week: {
+                date: {
+                  $toDate: { $multiply: ['$date', 1000] },
+                },
+                timezone: 'America/New_York', // Specify your timezone here
+              },
+            },
+            year: {
+              $year: {
+                date: {
+                  $toDate: { $multiply: ['$date', 1000] },
+                },
+                timezone: 'America/New_York', // Specify your timezone here
+              },
+            },
+          },
           count: { $sum: 1 },
         },
       },
+      {
+        $sort: {
+          '_id.year': 1,
+          '_id.week': 1,
+        },
+      },
     ]).toArray()
-  )?.map((i) => ({ date: i._id, count: i.count }))
+  )?.map((i) => ({
+    date: `Week ${i._id.week}, ${i._id.year}`,
+    count: i.count,
+  }))
 
   const geographicDistribution = (
     await Receipt?.aggregate([

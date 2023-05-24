@@ -32,17 +32,13 @@ const ReceiptStatsComponent = ({ stats }: { stats: ReceiptStats }) => {
   console.log(stats)
 
   const transactionsOverTimeData = {
-    labels: stats.transactionsOverTime?.map((d) =>
-      new Date(d.date).toLocaleDateString()
-    ),
+    labels: stats?.transactionsOverTime?.map((transaction) => transaction.date),
     datasets: [
       {
-        label: 'Transactions Over Time',
-        data: stats.transactionsOverTime?.map((d) => d.count),
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderWidth: 1,
-        fill: false,
+        data: stats?.transactionsOverTime?.map(
+          (transaction) => transaction.count
+        ),
+        label: 'Weeks',
       },
     ],
   }

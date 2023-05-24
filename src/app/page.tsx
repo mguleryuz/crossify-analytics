@@ -1,5 +1,5 @@
 import UserStatsComponent from '@/components/UserStats'
-import { UserStats } from '../api/users/getStats/route'
+import { UserStats } from './api/users/getStats/route'
 
 async function getData() {
   const res = await fetch(
