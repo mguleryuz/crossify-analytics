@@ -10,13 +10,12 @@ import { useAccount } from 'wagmi'
 import { useEffect, useState } from 'react'
 import { UserRoles } from '@/types/data-contracts'
 import Auth from './Auth'
-import baseApiUrl from '@/lib/contants/baseApiUrl'
 Chart.register(...registerables)
 
 async function getUserRole(address?: string | `0x${string}`) {
   if (!address) return
   const res = await fetch(
-    `${baseApiUrl}/api/users/role?dbName=crossifyDev&address=${address}`
+    `/api/users/role?dbName=crossifyDev&address=${address}`
   )
   if (!res.ok) throw new Error('Failed to fetch data')
   return res.json() as Promise<{ role?: UserRoles }>
