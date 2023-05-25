@@ -18,7 +18,13 @@ export default function Auth({ isLoading }: { isLoading: boolean }) {
         <Spinner />
       ) : (
         <>
-          {isConnected && <Heading>Insufficient Role!</Heading>}
+          {isConnected ? (
+            <Heading>Insufficient Role!</Heading>
+          ) : (
+            <Heading size="lg" maxW={'500px'}>
+              Please Connect Your Wallet To Access Crossify Aanalytics
+            </Heading>
+          )}
           <ConnectButtonC />
         </>
       )}

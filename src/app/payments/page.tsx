@@ -1,9 +1,11 @@
+import baseApiUrl from '@/lib/contants/baseApiUrl'
 import { PaymentStats } from '../api/payments/getStats/route'
 import PaymentStatsComponent from '@/components/PaymentStats'
 
 async function getData() {
   const res = await fetch(
-    'http://localhost:3000/api/payments/getStats?dbName=crossifyDev'
+    `${baseApiUrl}/api/payments/getStats?dbName=crossifyDev`,
+    { next: { revalidate: 60 } }
   )
   if (!res.ok) throw new Error('Failed to fetch data')
   return res.json() as Promise<PaymentStats>
