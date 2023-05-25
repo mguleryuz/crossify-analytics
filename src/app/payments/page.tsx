@@ -7,7 +7,7 @@ async function getData() {
     `${baseApiUrl}/api/payments/getStats?dbName=crossifyDev`,
     { cache: 'no-store' }
   )
-  if (!res.ok) throw new Error('Failed to fetch data')
+  if (!res.ok) console.error('Failed to fetch data')
   return res.json() as Promise<PaymentStats>
 }
 

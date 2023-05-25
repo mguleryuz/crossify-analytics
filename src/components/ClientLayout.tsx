@@ -17,7 +17,7 @@ async function getUserRole(address?: string | `0x${string}`) {
   const res = await fetch(
     `/api/users/role?dbName=crossifyDev&address=${address}`
   )
-  if (!res.ok) throw new Error('Failed to fetch data')
+  if (!res.ok) console.error('Failed to fetch data')
   return res.json() as Promise<{ role?: UserRoles }>
 }
 
