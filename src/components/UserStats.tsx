@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react'
 import { Line } from 'react-chartjs-2'
 import { UserStats } from '@/app/api/users/getStats/route'
+import baseApiUrl from '@/lib/contants/baseApiUrl'
+import { useEffect, useState } from 'react'
 
 const statStyle = {
   p: 3,
@@ -21,16 +23,30 @@ const statStyle = {
   borderRadius: 'md',
 }
 
-const UserStatsComponent = ({ stats }: { stats: NonNullable<UserStats> }) => {
+async function getData() {
+  const res = await fetch(
+    `${baseApiUrl}/api/users/getStats?dbName=crossifyDev`,
+    { cache: 'no-store' }
+  )
+  if (!res.ok) throw new Error('Failed to fetch data')
+  return res.json() as Promise<UserStats>
+}
+
+const UserStatsComponent = () => {
+  const [stats, setStats] = useState<UserStats>()
   const userCountOverTime = {
-    labels: stats.userCountOverTime?.map((user) => user.date),
+    labels: stats?.userCountOverTime?.map((user) => user.date),
     datasets: [
       {
-        data: stats.userCountOverTime?.map((user) => user.count),
+        data: stats?.userCountOverTime?.map((user) => user.count),
         label: 'Weeks',
       },
     ],
   }
+
+  useEffect(() => {
+    getData().then(setStats)
+  }, [])
 
   return (
     <Stack p={5} spacing={3}>
@@ -39,14 +55,14 @@ const UserStatsComponent = ({ stats }: { stats: NonNullable<UserStats> }) => {
       <Wrap gap={3}>
         <Stat {...statStyle}>
           <StatLabel>Total Users</StatLabel>
-          <StatNumber>{stats.totalUserCount}</StatNumber>
+          <StatNumber>{stats?.totalUserCount}</StatNumber>
         </Stat>
         <Box {...statStyle} width={['full', 'initial']}>
           <Heading size="md" mb={3}>
             User Status Breakdown
           </Heading>
           <HStack spacing={3}>
-            {stats.userDistributionByStatus.map((i) => (
+            {stats?.userDistributionByStatus.map((i) => (
               <Stat key={i.status}>
                 <StatLabel>{i.status}</StatLabel>
                 <StatNumber>{i.count}</StatNumber>

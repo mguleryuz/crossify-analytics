@@ -13,6 +13,8 @@ import {
 import { Line, Bar, Pie } from 'react-chartjs-2'
 import { PaymentStats } from '@/app/api/payments/getStats/route'
 import { compressAddress } from '@/lib/utils'
+import { useEffect, useState } from 'react'
+import baseApiUrl from '@/lib/contants/baseApiUrl'
 
 const statStyle = {
   p: 3,
@@ -21,7 +23,17 @@ const statStyle = {
   borderRadius: 'md',
 }
 
-const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
+async function getData() {
+  const res = await fetch(
+    `${baseApiUrl}/api/payments/getStats?dbName=crossifyDev`,
+    { cache: 'no-store' }
+  )
+  if (!res.ok) throw new Error('Failed to fetch data')
+  return res.json() as Promise<PaymentStats>
+}
+
+const PaymentStatsComponent = () => {
+  const [stats, setStats] = useState<PaymentStats>()
   const paymentsOverTimeData = {
     labels: stats?.paymentsOverTime?.map((payment) => payment.date),
     datasets: [
@@ -78,6 +90,10 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
     ],
   }
 
+  useEffect(() => {
+    getData().then(setStats)
+  }, [])
+
   return (
     <Stack p={5} spacing={3}>
       <Heading>Payment Stats</Heading>
@@ -85,11 +101,11 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
       <SimpleGrid columns={2} spacing={3}>
         <Stat {...statStyle}>
           <StatLabel>Total Payments</StatLabel>
-          <StatNumber>{stats.total}</StatNumber>
+          <StatNumber>{stats?.total}</StatNumber>
         </Stat>
         <Stat {...statStyle}>
           <StatLabel>Average Visit Count</StatLabel>
-          <StatNumber>{stats.averageVisitCount}</StatNumber>
+          <StatNumber>{stats?.averageVisitCount}</StatNumber>
         </Stat>
       </SimpleGrid>
       <Box {...statStyle}>
@@ -97,12 +113,13 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
           Status Breakdown
         </Heading>
         <SimpleGrid columns={3} spacing={10}>
-          {Object.entries(stats.statusBreakdown!).map(([status, count]) => (
-            <Stat key={status}>
-              <StatLabel>{status}</StatLabel>
-              <StatNumber>{count}</StatNumber>
-            </Stat>
-          ))}
+          {!!stats?.statusBreakdown &&
+            Object.entries(stats?.statusBreakdown).map(([status, count]) => (
+              <Stat key={status}>
+                <StatLabel>{status}</StatLabel>
+                <StatNumber>{count}</StatNumber>
+              </Stat>
+            ))}
         </SimpleGrid>
       </Box>
       <Box {...statStyle}>
@@ -110,12 +127,13 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
           Type Breakdown
         </Heading>
         <SimpleGrid columns={3} spacing={10}>
-          {Object.entries(stats.typeBreakdown!).map(([type, count]) => (
-            <Stat key={type}>
-              <StatLabel>{type}</StatLabel>
-              <StatNumber>{count}</StatNumber>
-            </Stat>
-          ))}
+          {!!stats?.typeBreakdown &&
+            Object.entries(stats?.typeBreakdown).map(([type, count]) => (
+              <Stat key={type}>
+                <StatLabel>{type}</StatLabel>
+                <StatNumber>{count}</StatNumber>
+              </Stat>
+            ))}
         </SimpleGrid>
       </Box>
       <Box mt={5}>

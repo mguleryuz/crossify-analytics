@@ -1,6 +1,7 @@
 'use client'
 
 import { ReceiptStats } from '@/app/api/receipts/getStats/route'
+import baseApiUrl from '@/lib/contants/baseApiUrl'
 import { compressAddress } from '@/lib/utils'
 import {
   Box,
@@ -19,6 +20,7 @@ import {
   GridItem,
   Divider,
 } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 
 const statStyle = {
@@ -28,11 +30,17 @@ const statStyle = {
   borderRadius: 'md',
 }
 
-const ReceiptStatsComponent = ({
-  stats,
-}: {
-  stats: NonNullable<ReceiptStats>
-}) => {
+async function getData() {
+  const res = await fetch(
+    `${baseApiUrl}/api/receipts/getStats?dbName=crossifyDev`,
+    { cache: 'no-store' }
+  )
+  if (!res.ok) throw new Error('Failed to fetch data')
+  return res.json() as Promise<ReceiptStats>
+}
+
+const ReceiptStatsComponent = () => {
+  const [stats, setStats] = useState<ReceiptStats>()
   const transactionsOverTimeData = {
     labels: stats?.transactionsOverTime?.map((transaction) => transaction.date),
     datasets: [
@@ -45,6 +53,10 @@ const ReceiptStatsComponent = ({
     ],
   }
 
+  useEffect(() => {
+    getData().then(setStats)
+  }, [])
+
   return (
     <Stack p={5} spacing={5}>
       <Heading>Receipt Stats</Heading>
@@ -56,7 +68,7 @@ const ReceiptStatsComponent = ({
               Status Breakdown
             </Heading>
             <Divider mb={2} />
-            {Object.entries(stats.transactionStatusBreakdown).map(
+            {Object.entries(stats?.transactionStatusBreakdown).map(
               ([status, count]) => (
                 <Stat key={status}>
                   <StatLabel>{status}</StatLabel>
@@ -69,24 +81,24 @@ const ReceiptStatsComponent = ({
 
         <Stat {...statStyle}>
           <StatLabel>Total Transactions</StatLabel>
-          <StatNumber>{stats.totalTransactions}</StatNumber>
+          <StatNumber>{stats?.totalTransactions}</StatNumber>
         </Stat>
         <Stat {...statStyle}>
           <StatLabel>Total Value Transacted (USD)</StatLabel>
-          <StatNumber>{stats.totalValueTransactedUSD}</StatNumber>
+          <StatNumber>{stats?.totalValueTransactedUSD}</StatNumber>
         </Stat>
         <Stat {...statStyle}>
           <StatLabel>Total Platform Fees (USD)</StatLabel>
-          <StatNumber>{stats.totalPlatformFeesUSD}</StatNumber>
+          <StatNumber>{stats?.totalPlatformFeesUSD}</StatNumber>
         </Stat>
         <Stat {...statStyle}>
           <StatLabel>Average Transaction Value (USD)</StatLabel>
-          <StatNumber>{stats.averageTransactionValueUSD}</StatNumber>
+          <StatNumber>{stats?.averageTransactionValueUSD}</StatNumber>
         </Stat>
         <GridItem colSpan={2}>
           <Stat {...statStyle}>
             <StatLabel>Total Gas Fees (USD)</StatLabel>
-            <StatNumber>{stats.totalGasFeesUSD}</StatNumber>
+            <StatNumber>{stats?.totalGasFeesUSD}</StatNumber>
           </Stat>
         </GridItem>
       </SimpleGrid>
@@ -110,7 +122,7 @@ const ReceiptStatsComponent = ({
           </Tr>
         </Thead>
         <Tbody>
-          {stats.topTokensTransacted?.map((t, index) => (
+          {stats?.topTokensTransacted?.map((t, index) => (
             <Tr key={index}>
               <Td>{compressAddress(t.tokenAddress)}</Td>
               <Td>{t.chainId}</Td>
@@ -131,7 +143,7 @@ const ReceiptStatsComponent = ({
           </Tr>
         </Thead>
         <Tbody>
-          {stats.geographicDistribution?.map((g, index) => (
+          {stats?.geographicDistribution?.map((g, index) => (
             <Tr key={index}>
               <Td>{g.country}</Td>
               <Td>{g.count}</Td>
@@ -151,7 +163,7 @@ const ReceiptStatsComponent = ({
           </Tr>
         </Thead>
         <Tbody>
-          {stats.transactionsByChainId?.map((c, index) => (
+          {stats?.transactionsByChainId?.map((c, index) => (
             <Tr key={index}>
               <Td>{c.chainId}</Td>
               <Td>{c.count}</Td>
@@ -171,7 +183,7 @@ const ReceiptStatsComponent = ({
           </Tr>
         </Thead>
         <Tbody>
-          {stats.receiptPaymentRatio?.map((r, index) => (
+          {stats?.receiptPaymentRatio?.map((r, index) => (
             <Tr key={index}>
               <Td>{r.paymentId}</Td>
               <Td>{r.ratio}</Td>
