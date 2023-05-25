@@ -1,7 +1,6 @@
 'use client'
 
 import { ReceiptStats } from '@/app/api/receipts/getStats/route'
-import baseApiUrl from '@/lib/contants/baseApiUrl'
 import { compressAddress } from '@/lib/utils'
 import {
   Box,
@@ -31,10 +30,9 @@ const statStyle = {
 }
 
 async function getData() {
-  const res = await fetch(
-    `${baseApiUrl}/api/receipts/getStats?dbName=crossifyDev`,
-    { cache: 'no-store' }
-  )
+  const res = await fetch(`/api/receipts/getStats?dbName=crossifyDev`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch data')
   return res.json() as Promise<ReceiptStats>
 }

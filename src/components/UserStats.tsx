@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react'
 import { Line } from 'react-chartjs-2'
 import { UserStats } from '@/app/api/users/getStats/route'
-import baseApiUrl from '@/lib/contants/baseApiUrl'
 import { useEffect, useState } from 'react'
 
 const statStyle = {
@@ -24,10 +23,9 @@ const statStyle = {
 }
 
 async function getData() {
-  const res = await fetch(
-    `${baseApiUrl}/api/users/getStats?dbName=crossifyDev`,
-    { cache: 'no-store' }
-  )
+  const res = await fetch(`/api/users/getStats?dbName=crossifyDev`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch data')
   return res.json() as Promise<UserStats>
 }

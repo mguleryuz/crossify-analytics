@@ -14,7 +14,6 @@ import { Line, Bar, Pie } from 'react-chartjs-2'
 import { PaymentStats } from '@/app/api/payments/getStats/route'
 import { compressAddress } from '@/lib/utils'
 import { useEffect, useState } from 'react'
-import baseApiUrl from '@/lib/contants/baseApiUrl'
 
 const statStyle = {
   p: 3,
@@ -24,10 +23,9 @@ const statStyle = {
 }
 
 async function getData() {
-  const res = await fetch(
-    `${baseApiUrl}/api/payments/getStats?dbName=crossifyDev`,
-    { cache: 'no-store' }
-  )
+  const res = await fetch(`/api/payments/getStats?dbName=crossifyDev`, {
+    cache: 'no-store',
+  })
   if (!res.ok) throw new Error('Failed to fetch data')
   return res.json() as Promise<PaymentStats>
 }
