@@ -13,6 +13,5 @@ async function getData() {
 
 export default async function Page() {
   const data = await getData()
-  if (!data) return <div>Failed to load data</div>
   return <ReceiptStatsComponent stats={data} />
 }
