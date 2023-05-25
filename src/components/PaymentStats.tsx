@@ -22,8 +22,6 @@ const statStyle = {
 }
 
 const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
-  console.log(stats)
-
   const paymentsOverTimeData = {
     labels: stats?.paymentsOverTime?.map((payment) => payment.date),
     datasets: [

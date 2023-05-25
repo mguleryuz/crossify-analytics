@@ -22,8 +22,6 @@ const statStyle = {
 }
 
 const UserStatsComponent = ({ stats }: { stats: UserStats }) => {
-  console.log(stats)
-
   const userCountOverTime = {
     labels: stats?.userCountOverTime?.map((user) => user.date),
     datasets: [

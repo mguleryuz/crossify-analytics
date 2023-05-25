@@ -29,8 +29,6 @@ const statStyle = {
 }
 
 const ReceiptStatsComponent = ({ stats }: { stats: ReceiptStats }) => {
-  console.log(stats)
-
   const transactionsOverTimeData = {
     labels: stats?.transactionsOverTime?.map((transaction) => transaction.date),
     datasets: [
