@@ -28,7 +28,11 @@ const statStyle = {
   borderRadius: 'md',
 }
 
-const ReceiptStatsComponent = ({ stats }: { stats: ReceiptStats }) => {
+const ReceiptStatsComponent = ({
+  stats,
+}: {
+  stats: NonNullable<ReceiptStats>
+}) => {
   const transactionsOverTimeData = {
     labels: stats?.transactionsOverTime?.map((transaction) => transaction.date),
     datasets: [

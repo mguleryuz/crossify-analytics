@@ -78,14 +78,6 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
     ],
   }
 
-  if (
-    !stats ||
-    !stats?.statusBreakdown ||
-    !stats?.typeBreakdown ||
-    !stats?.paymentsOverTime
-  )
-    return null
-
   return (
     <Stack p={5} spacing={3}>
       <Heading>Payment Stats</Heading>
@@ -105,7 +97,7 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
           Status Breakdown
         </Heading>
         <SimpleGrid columns={3} spacing={10}>
-          {Object.entries(stats.statusBreakdown).map(([status, count]) => (
+          {Object.entries(stats.statusBreakdown!).map(([status, count]) => (
             <Stat key={status}>
               <StatLabel>{status}</StatLabel>
               <StatNumber>{count}</StatNumber>
@@ -118,7 +110,7 @@ const PaymentStatsComponent = ({ stats }: { stats: PaymentStats }) => {
           Type Breakdown
         </Heading>
         <SimpleGrid columns={3} spacing={10}>
-          {Object.entries(stats.typeBreakdown).map(([type, count]) => (
+          {Object.entries(stats.typeBreakdown!).map(([type, count]) => (
             <Stat key={type}>
               <StatLabel>{type}</StatLabel>
               <StatNumber>{count}</StatNumber>
