@@ -4,7 +4,7 @@ import ReceiptStatsComponent from '@/components/ReceiptStats'
 
 async function getData() {
   const res = await fetch(
-    `${baseApiUrl()}/api/receipts/getStats?dbName=crossifyDev`,
+    `${baseApiUrl}/api/receipts/getStats?dbName=crossifyDev`,
     { cache: 'no-store' }
   )
   if (!res.ok) throw new Error('Failed to fetch data')

@@ -5,10 +5,10 @@ const PORT = () => {
     case 'development':
       return 3000
     default:
-      return 3000
+      return 8080
   }
 }
 
-const baseApiUrl = () => `http://localhost:${PORT()}`
+const baseApiUrl = `http://localhost:${PORT()}`
 
 export default baseApiUrl
