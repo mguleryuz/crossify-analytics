@@ -4,7 +4,7 @@ import baseApiUrl from '@/lib/contants/baseApiUrl'
 
 async function getData() {
   const res = await fetch(
-    `${baseApiUrl}/api/users/getStats?dbName=crossifyDev`,
+    `${baseApiUrl()}/api/users/getStats?dbName=crossifyDev`,
     { cache: 'no-store' }
   )
   if (!res.ok) throw new Error('Failed to fetch data')

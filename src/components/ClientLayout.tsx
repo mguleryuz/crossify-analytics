@@ -16,7 +16,7 @@ Chart.register(...registerables)
 async function getUserRole(address?: string | `0x${string}`) {
   if (!address) return
   const res = await fetch(
-    `${baseApiUrl}/api/users/role?dbName=crossifyDev&address=${address}`
+    `${baseApiUrl()}/api/users/role?dbName=crossifyDev&address=${address}`
   )
   if (!res.ok) throw new Error('Failed to fetch data')
   return res.json() as Promise<{ role?: UserRoles }>

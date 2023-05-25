@@ -9,6 +9,6 @@ const PORT = () => {
   }
 }
 
-const baseApiUrl = `http://localhost:${PORT()}`
+const baseApiUrl = () => `http://localhost:${PORT()}`
 
 export default baseApiUrl
