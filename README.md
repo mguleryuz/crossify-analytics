@@ -1,16 +1,47 @@
-This is a [Next.js](https://nextjs.org) + [wagmi](https://wagmi.sh) project bootstrapped with [`create-wagmi`](https://github.com/wagmi-dev/wagmi/tree/main/packages/create-wagmi)
+# Crossify Analytics
 
-# Getting Started
+Crossify Analytics is a web application that provides data analytics for Crossify, a crosschain cryptocurrency payment system. This project aims to gather, process, and visualize data from the Crossify platform, delivering valuable insights for investors, users, and developers alike.
 
-Run `npm run dev` in your terminal, and then open [localhost:3000](http://localhost:3000) in your browser.
+Crossify offers a unique cross-chain payment and gateway system, simplifying the process of receiving payments in different tokens, regardless of the seller's preferred token. Alongside, it also provides checkout links for an easy payment page, data analytics via receipts, and plugins for e-commerce and accounting software.
 
-Once the webpage has loaded, changes made to files inside the `src/` directory (e.g. `src/pages/index.tsx`) will automatically update the webpage.
+## Setting Up The Project Locally
 
-# Learn more
+1. Clone the repository: 
 
-To learn more about [Next.js](https://nextjs.org) or [wagmi](https://wagmi.sh), check out the following resources:
+    ```bash
+    git clone https://github.com/crossifyxyz/crossify-analytics.git
+    ```
 
-- [wagmi Documentation](https://wagmi.sh) – learn about wagmi Hooks and API.
-- [wagmi Examples](https://wagmi.sh/examples/connect-wallet) – a suite of simple examples using wagmi.
-- [Next.js Documentation](https://nextjs.org/docs) learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Navigate into the directory:
+
+    ```bash
+    cd crossify-analytics
+    ```
+
+3. Install the dependencies:
+
+    ```bash
+    npm install
+    ```
+
+4. Copy the `.env.example` file to a new file named `.env`:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+5. Open the `.env` file and replace the placeholders with your actual values:
+
+    ```
+    NEXT_PUBLIC_ENV=development
+    NEXT_PUBLIC_ALCHEMY_API_KEY=<your-api-key>
+    MONGO_URI=<your-mongodb-uri>
+    ```
+
+6. Start the local development server:
+
+    ```bash
+    npm run dev
+    ```
+
+7. Open [http://localhost:3000](http://localhost:3000) to see the application in your browser.
